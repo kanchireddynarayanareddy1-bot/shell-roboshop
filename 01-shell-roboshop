@@ -3,7 +3,7 @@ SG-Id="sg-031674407f289d035"
 
 for instace in $@
 do 
-  Instance_Id= $aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type t3.micro --security-group-ids sg-031674407f289d035 --tag-specifications'ResourceType=instance,Tags=[{Key=Name,Value=Test}]' --query 'Instances[0].InstanceId' --output text
+  Instance_Id= $(aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type t3.micro --security-group-ids sg-031674407f289d035 --tag-specifications"ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
   if [ $Instance != "frontend" ]; then
     IP=$(aws ec2 describe-instances --instance-ids $Instance_Id --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)
