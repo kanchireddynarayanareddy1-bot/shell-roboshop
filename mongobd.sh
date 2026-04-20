@@ -18,9 +18,9 @@ if [ $UserId -ne 0 ]; then
 fi
 validate (){
    if [ $1 -ne 0 ]; then
-    echo -e " $2 $R failed $N" | tee -a $LogFile
+    echo -e " $2 $R FAILURE $N" | tee -a $LogFile
 else
-    echo -e "$2 $G successful $N" | tee -a $LogFile
+    echo -e "$2 $G SUCCESS $N" | tee -a $LogFile
 fi 
 }
 
