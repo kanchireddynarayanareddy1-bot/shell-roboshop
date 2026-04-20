@@ -27,10 +27,10 @@ fi
 cp mongo.repo /etc/yum.repos.d/mongo.repo
 VALIDATE $? "Adding Mongo repo" 
 
-dnf install mongodb-org -y &>>$LOG_FILE
+dnf install mongodb-org -y &>>$LogFile
 VALIDATE $? "Installing MongoDB"
 
-systemctl enable mongod &>>$LOG_FILE
+systemctl enable mongod &>>$LogFile
 VALIDATE $? "Enable MongoDB"
 
 systemctl start mongod 
