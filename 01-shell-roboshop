@@ -1,5 +1,5 @@
 AMI_Id=ami-0220d79f3f480ecf5
-SG-Id=sg-06d62d571b6f2f92f
+SG-Id=sg-031674407f289d035
 
 for instace in $@
 do 
