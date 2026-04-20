@@ -1,16 +1,23 @@
-AMI_Id="ami-0220d79f3f480ecf5"
-SG_Id="sg-031674407f289d035"
+#!/bin/bash
 
-for instace in $@
-do 
-  Instance_Id=$(aws ec2 run-instances --image-id ami-0220d79f3f480ecf5 --instance-type t3.micro --security-group-ids sg-031674407f289d035 --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
-  
-  if [ $Instance != "frontend" ]; then
-    IP=$(aws ec2 describe-instances --instance-ids $Instance_Id --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)
-   else
-    IP=$(aws ec2 describe-instances --instance-ids $Instance_Id --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+AMI_ID="ami-0220d79f3f480ecf5"
+SG_ID="sg-031674407f289d035" # replace with your SG ID
+#ZONE_ID="Z0948150OFPSYTNVYZOY" # replace with your ID
+#DOMAIN_NAME="daws86s.fun"
 
-  fi
+for instance in $@ # mongodb redis mysql
+do
+    INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=$instance}]" --query 'Instances[0].InstanceId' --output text)
 
-  echo "$instance:$IP"
+    # Get Private IP
+    if [ $instance != "frontend" ]; then
+        IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PrivateIpAddress' --output text)
+       #RECORD_NAME="$instance.$DOMAIN_NAME" # mongodb.daws86s.fun
+    else
+        IP=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+       # RECORD_NAME="$DOMAIN_NAME" # daws86s.fun
+    fi
+
+    echo "$instance: $IP"
+
 done
